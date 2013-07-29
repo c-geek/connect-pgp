@@ -6,11 +6,13 @@ A middleware for Connect.js signing HTTP responses.
 
 ## Usage
 
-    var connect = require('connect');
-    var pgpsign = require('connect-pgp');
+```js
+var connect = require('connect');
+var pgpsign = require('connect-pgp');
 
-    var app = connect();
-    app.use(pgpsign());
+var app = connect();
+app.use(pgpsign());
+```
 
 ## Triggering
 
