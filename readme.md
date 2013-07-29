@@ -22,6 +22,7 @@ Middleware triggers on HTTP header:
 
 then answers:
 
+    HTTP/1.1 200 OK
     Content-Type: multipart/signed; boundary=bar; micalg=pgp-sha1; protocol="application/pgp-signature"
 
     --bar
