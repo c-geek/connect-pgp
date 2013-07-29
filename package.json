@@ -1,0 +1,32 @@
+{
+  "name": "connect-pgp",
+  "version": "0.0.1",
+  "description": "Connect middleware to cryptographically sign HTTP responses.",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:c-geek/connect-pgp.git"
+  },
+  "keywords": [
+    "HTTP",
+    "cryptography",
+    "openpgp",
+    "multipart/signed",
+    "httpgp"
+  ],
+  "author": "Cedric Moreau <cem.moreau@gmail.com>",
+  "license": "MIT",
+  "readmeFilename": "readme.md",
+  "bugs": {
+    "url": "https://github.com/c-geek/connect-pgp/issues"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
