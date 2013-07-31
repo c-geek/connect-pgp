@@ -1,13 +1,18 @@
 var SigningStream = require('./signingstream').SigningStream;
+var openpgp       = require('./openpgp').openpgp;
 
-module.exports = function sign() {
+module.exports = function sign(pgpArmoredPrivateKey, password) {
+
+  openpgp.init();
+  openpgp.keyring.importPrivateKey(pgpArmoredPrivateKey, password);
 
   return function sign(req, res, next){
     var write = res.write
       , end = res.end
       , stream
       , method
-      , doSign = req.headers['accept'] == 'multipart/signed';
+      , doSign = req.headers['accept'] == 'multipart/signed'
+      , boundary = 'foo';
 
     // see compress.js #724
     req.on('close', function(){
@@ -38,16 +43,19 @@ module.exports = function sign() {
     // Rendering fired
     res.on('header', function(){
       if (!doSign) return;
-      console.log("Sign: ", doSign);
 
       // head
       if ('HEAD' == req.method) return;
 
       // signature stream
-      stream = new SigningStream();
+      stream = new SigningStream(openpgp, boundary);
 
       // header fields
-      res.setHeader('Content-Type', 'multipart/signed');
+      var contentType = 'multipart/signed;';
+      contentType += ' boundary='+boundary+';';
+      contentType += ' micalg=pgp-sha1;';
+      contentType += ' protocol="application/pgp-signature"';
+      res.setHeader('Content-Type', contentType);
       res.removeHeader('Content-Length');
 
       // signature
