@@ -5112,7 +5112,7 @@ function openpgp_symenc_cast5() {
 		 }
 		 return true;
 	};
-	
+
 	this.reset = function() {
 		 for (var i = 0; i < 16; i++)
 		 {
@@ -5166,7 +5166,7 @@ function openpgp_symenc_cast5() {
 
 		 return dst;
 	};
-	
+
 	this.decrypt = function(src) {
 		 var dst = new Array(src.length);
 
@@ -7582,7 +7582,7 @@ function openpgp_encoding_deArmor(text) {
 		var result = {
 			text: splittedtext[2]
 				.replace(/\n- /g,"\n")
-				.split("\n\n")[1],
+        .split("\n\n")[1],
 			openpgp: openpgp_encoding_base64_decode(splittedtext[4]
 				.split("\n\n")[1]
 				.split("\n=")[0]),
@@ -8006,6 +8006,7 @@ function openpgp_encoding_emsa_pkcs1_decode(algo, data) {
 
 
 	var showMessages = function(text){
+    console.log(text);
 		sys.puts(text);
 	}
 
@@ -8810,10 +8811,10 @@ function openpgp_msg_message() {
 				util.print_warning("Unable to verify signature of issuer: "+util.hexstrdump(this.signature.issuerKeyId)+". Public key not found in keyring.");
 			else {
 				for (var i = 0 ; i < pubkey.length; i++) {
-					var tohash = this.text.replace(/\r\n/g,"\n").replace(/\n/g,"\r\n");
+          var tohash = this.text.replace(/\r\n/g,"\n").replace(/\n/g,"\r\n");
 					if (this.signature.verify(tohash, pubkey[i])) {
 						util.print_info("Found Good Signature from "+pubkey[i].obj.userIds[0].text+" (0x"+util.hexstrdump(pubkey[i].obj.getKeyId()).substring(8)+")");
-						result = true;
+            result = true;
 					} else {
 						util.print_error("Signature verification failed: Bad Signature from "+pubkey[i].obj.userIds[0].text+" (0x"+util.hexstrdump(pubkey[0].obj.getKeyId()).substring(8)+")");
 					}
@@ -13188,7 +13189,7 @@ function openpgp_type_s2k() {
 
 var Util = function() {
 
-    this.emailRegEx = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+    //this.emailRegEx = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
 	
 	this.hexdump = function(str) {
 	    var r=[];
@@ -13356,8 +13357,8 @@ var Util = function() {
 	 */
 	this.print_debug = function(str) {
 		if (typeof openpgp.config !== "undefined" && openpgp.config.debug) {
-			str = openpgp_encoding_html_encode(str);
-			showMessages("<tt><p style=\"background-color: #ffffff; width: 652px; word-break: break-word; padding: 5px; border-bottom: 1px solid black;\">"+str.replace(/\n/g,"<br>")+"</p></tt>");
+			// str = openpgp_encoding_html_encode(str);
+			showMessages(str);
 		}
 	};
 	
@@ -13376,8 +13377,8 @@ var Util = function() {
 	this.print_debug_hexstr_dump = function(str,strToHex) {
 		if (typeof openpgp.config !== "undefined" && openpgp.config.debug) {
 			str = str + this.hexstrdump(strToHex);
-			str = openpgp_encoding_html_encode(str);
-			showMessages("<tt><p style=\"background-color: #ffffff; width: 652px; word-break: break-word; padding: 5px; border-bottom: 1px solid black;\">"+str.replace(/\n/g,"<br>")+"</p></tt>");
+			// str = openpgp_encoding_html_encode(str);
+			showMessages(str);
 		}
 	};
 	
@@ -13391,8 +13392,8 @@ var Util = function() {
 	 * containing the HTML encoded error message
 	 */
 	this.print_error = function(str) {
-		str = openpgp_encoding_html_encode(str);
-		showMessages("<p style=\"font-size: 80%; background-color: #FF8888; margin:0; width: 652px; word-break: break-word; padding: 5px; border-bottom: 1px solid black;\"><span style=\"color: #888;\"><b>ERROR:</b></span>	"+str.replace(/\n/g,"<br>")+"</p>");
+		// str = openpgp_encoding_html_encode(str);
+		showMessages(str);
 	};
 	
 	/**
@@ -13405,13 +13406,13 @@ var Util = function() {
 	 * containing the HTML encoded info message
 	 */
 	this.print_info = function(str) {
-		str = openpgp_encoding_html_encode(str);
-		showMessages("<p style=\"font-size: 80%; background-color: #88FF88; margin:0; width: 652px; word-break: break-word; padding: 5px; border-bottom: 1px solid black;\"><span style=\"color: #888;\"><b>INFO:</b></span>	"+str.replace(/\n/g,"<br>")+"</p>");
+		// str = openpgp_encoding_html_encode(str);
+		showMessages(str);
 	};
 	
 	this.print_warning = function(str) {
-		str = openpgp_encoding_html_encode(str);
-		showMessages("<p style=\"font-size: 80%; background-color: #FFAA88; margin:0; width: 652px; word-break: break-word; padding: 5px; border-bottom: 1px solid black;\"><span style=\"color: #888;\"><b>WARNING:</b></span>	"+str.replace(/\n/g,"<br>")+"</p>");
+		// str = openpgp_encoding_html_encode(str);
+		showMessages(str);
 	};
 	
 	this.getLeftNBits = function (string, bitcount) {
