@@ -2,16 +2,16 @@
 
 A middleware for Connect.js signing HTTP responses.
 
-**THIS MODULE DOES NOTHING YET.**
-
 ## Usage
 
 ```js
 var connect = require('connect');
 var pgpsign = require('connect-pgp');
 
+var armoredPrivateKey = fs.readFileSync('somePGPKey.private', 'utf8');
+
 var app = connect();
-app.use(pgpsign());
+app.use(pgpsign(armoredPrivateKey, 'password for unlocking'));
 ```
 
 ## Triggering
@@ -29,11 +29,11 @@ then answers:
     Content-Type: text/plain; charset=iso-8859-1
     Content-Transfer-Encoding: quoted-printable
     
-    This is the body content.
-
-    Every word and every space in the body content body will be
-    signed, even the two fields "Content-Type" and "Content-Transfer-Encoding"
-    above, with the new line before this body content.
+  & This is the body content.
+  & 
+  & Every word and every space in the body content body will be
+  & signed, even the two fields "Content-Type" and "Content-Transfer-Encoding"
+  & above, with the new line before this body content.
 
     --bar
     Content-Type: application/pgp-signature
@@ -49,6 +49,8 @@ then answers:
     -----END PGP MESSAGE-----
 
     --bar--
+
+N.B.: the part of the response with '&' is what is signed.
 
 # License
 
