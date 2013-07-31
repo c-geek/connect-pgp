@@ -7582,7 +7582,7 @@ function openpgp_encoding_deArmor(text) {
 		var result = {
 			text: splittedtext[2]
 				.replace(/\n- /g,"\n")
-        .split("\n\n")[1],
+        .substring(splittedtext[2].indexOf('\n\n') + '\n\n'.length).replace(/\n$/, ''),
 			openpgp: openpgp_encoding_base64_decode(splittedtext[4]
 				.split("\n\n")[1]
 				.split("\n=")[0]),
@@ -8386,8 +8386,8 @@ function _openpgp () {
 	 * This can be directly used to OpenPGP armor the message
 	 */
 	function write_signed_message(privatekey, messagetext) {
-		var sig = new openpgp_packet_signature().write_message_signature(1, messagetext.replace(/\r\n/g,"\n").replace(/\n/,"\r\n"), privatekey);
-		var result = {text: messagetext.replace(/\r\n/g,"\n").replace(/\n/,"\r\n"), openpgp: sig.openpgp, hash: sig.hash};
+		var sig = new openpgp_packet_signature().write_message_signature(1, messagetext, privatekey);
+		var result = {text: messagetext, openpgp: sig.openpgp, hash: sig.hash};
 		return openpgp_encoding_armor(2,result, null, null)
 	}
 	
