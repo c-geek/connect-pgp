@@ -8793,7 +8793,7 @@ function openpgp_msg_message() {
 	 * @param {openpgp_msg_publickey} pubkey Array of public keys to check signature against. If not provided, checks local keystore.
 	 * @return {boolean} true if the signature was correct; otherwise false
 	 */
-	function verifySignature(pubkey) {
+	function verifySignature(pubkey, textCompare) {
 		var result = false;
 		if (this.signature.tagType == 2) {
 		    if(!pubkey || pubkey.length == 0){
@@ -8814,7 +8814,13 @@ function openpgp_msg_message() {
           var tohash = this.text.replace(/\r\n/g,"\n").replace(/\n/g,"\r\n");
 					if (this.signature.verify(tohash, pubkey[i])) {
 						util.print_info("Found Good Signature from "+pubkey[i].obj.userIds[0].text+" (0x"+util.hexstrdump(pubkey[i].obj.getKeyId()).substring(8)+")");
-            result = true;
+            if(textCompare != undefined){
+              result = textCompare == this.text;
+              if(!result){
+                util.print_error("Signature matches, but text doest not.");
+              }
+            }
+            else result = true;
 					} else {
 						util.print_error("Signature verification failed: Bad Signature from "+pubkey[i].obj.userIds[0].text+" (0x"+util.hexstrdump(pubkey[0].obj.getKeyId()).substring(8)+")");
 					}
