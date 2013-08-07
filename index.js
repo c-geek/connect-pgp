@@ -1,6 +1,8 @@
 var SigningStream = require('./signingstream').SigningStream;
 var openpgp       = require('./openpgp').openpgp;
 
+var chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
 module.exports = function sign(pgpArmoredPrivateKey, password) {
 
   openpgp.init();
@@ -47,13 +49,19 @@ module.exports = function sign(pgpArmoredPrivateKey, password) {
       // head
       if ('HEAD' == req.method) return;
 
+      var boundary = "";
+      for (var i = 0; i < 15; i++) {
+        var num = Math.floor(Math.random() * 100) % 62;
+        boundary += chars[num];
+      };
+
       // signature stream
       stream = new SigningStream(openpgp, boundary);
 
       // header fields
       var contentType = 'multipart/signed;';
       contentType += ' boundary='+boundary+';';
-      contentType += ' micalg=pgp-sha1;';
+      //contentType += ' micalg=pgp-sha1;';
       contentType += ' protocol="application/pgp-signature"';
       res.setHeader('Content-Type', contentType);
       res.removeHeader('Content-Length');
