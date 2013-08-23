@@ -30,12 +30,11 @@ module.exports = function sign(pgpArmoredPrivateKey, password) {
     };
 
     res.end = function(chunk, encoding){
+      doSign = !this.headerSent;
       if (chunk) {
-        if (!this.headerSent) doSign = true;
         this.write(chunk, encoding);
       } else if (!this.headerSent) {
         // response size === 0
-        doSign = false;
       }
       return stream
         ? stream.end()
