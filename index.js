@@ -31,7 +31,7 @@ module.exports = function sign(pgpArmoredPrivateKey, password) {
 
     res.end = function(chunk, encoding){
       if (chunk) {
-        if (!this.headerSent) doSign = false;
+        if (!this.headerSent) doSign = true;
         this.write(chunk, encoding);
       } else if (!this.headerSent) {
         // response size === 0
