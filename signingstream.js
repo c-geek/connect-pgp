@@ -25,8 +25,8 @@ SigningStream.prototype.sign = function(callback) {
   process.nextTick(function () {
     var body = that.buffer.replace(/\r\n/g, '\n').replace(/\n/g, '\r\n');
     var cleaned = body;
-    cleaned = cleaned.replace(/-----BEGIN PGP(.*)-----\r\n/g, 'BEGIN PGP$1\r\n');
-    cleaned = cleaned.replace(/-----END PGP(.*)-----\r\n/g, 'END PGP$1\r\n');
+    cleaned = cleaned.replace(/-----BEGIN PGP([A-Z ]*)-----/g, 'BEGIN PGP$1');
+    cleaned = cleaned.replace(/-----END PGP([A-Z ]*)-----/g, 'END PGP$1');
     var ciphertext = that.openpgp.write_signed_message(that.openpgp.keyring.privateKeys[0].obj, cleaned);
     var ciphertext = ciphertext.substring(ciphertext.lastIndexOf('-----BEGIN PGP SIGNATURE-----'));
     var body = '';
