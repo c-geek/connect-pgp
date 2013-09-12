@@ -12,6 +12,9 @@ var armoredPrivateKey = fs.readFileSync('somePGPKey.private', 'utf8');
 
 var app = connect();
 app.use(pgpsign(armoredPrivateKey, 'password for unlocking'));
+
+// Or, to use gpg system command as underlying PGP signature layer
+app.use(pgpsign(armoredPrivateKey, 'password for unlocking', 'keyringName'));
 ```
 
 ## Triggering
