@@ -26,6 +26,8 @@
     "url": "https://github.com/c-geek/connect-pgp/issues"
   },
   "dependencies": {
+    "connect": "",
+    "sha1": ""
   },
   "devDependencies": {
   }

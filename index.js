@@ -1,12 +1,10 @@
 var SigningStream = require('./signingstream').SigningStream;
-var openpgp       = require('./openpgp').openpgp;
 
 var chars = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-module.exports = function sign(pgpArmoredPrivateKey, password) {
+module.exports = function sign(pgpArmoredPrivateKey, password, gpgKeyRingName) {
 
-  openpgp.init();
-  openpgp.keyring.importPrivateKey(pgpArmoredPrivateKey, password);
+  var jspgp = require('./jspgp')(pgpArmoredPrivateKey, password, gpgKeyRingName);
 
   return function sign(req, res, next){
     var write = res.write
@@ -55,7 +53,7 @@ module.exports = function sign(pgpArmoredPrivateKey, password) {
       };
 
       // signature stream
-      stream = new SigningStream(openpgp, boundary);
+      stream = new SigningStream(jspgp, boundary);
 
       // header fields
       var contentType = 'multipart/signed;';
