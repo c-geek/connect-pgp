@@ -27,10 +27,10 @@ SigningStream.prototype.sign = function(callback) {
     var cleaned = body;
     cleaned = cleaned.replace(/-----BEGIN PGP([A-Z ]*)-----/g, 'BEGIN PGP$1');
     cleaned = cleaned.replace(/-----END PGP([A-Z ]*)-----/g, 'END PGP$1');
-    var start = Date.now();
+    // var start = Date.now();
     that.jspgp.sign(cleaned, function (err, ciphertext) {
-      var end = Date.now();
-      console.log("Duration: %sms", (end-start));
+      // var end = Date.now();
+      // console.log("Duration: %sms", (end-start));
       var body = '';
       body += '--' + that.boundary + '\n';
       body += cleaned + '\n\n';
