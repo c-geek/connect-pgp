@@ -8,13 +8,7 @@ function OpenPGPJS(privateKey, passphrase) {
   openpgp.keyring.importPrivateKey(privateKey, passphrase);
 
   this.sign = function (message, callback) {
-    try{
-      callback(null, openpgp.write_signed_message(openpgp.keyring.privateKeys[0].obj, message));
-    }
-    catch(ex){
-      console.warn(ex.toString());
-      callback(ex.toString());
-    }
+    callback(null, openpgp.write_signed_message(openpgp.keyring.privateKeys[0].obj, message));
   }
 }
 
