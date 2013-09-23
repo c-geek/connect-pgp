@@ -32,7 +32,7 @@ function GPG(privateKey, passphrase, keyring) {
 
   this.sign = function (message, callback) {
     try{
-      var strippedMessage = message.replace(/\r\n/, '\n').replace(/\n/, '\\n');
+      var strippedMessage = message.replace(/\r\n/g, '\n').replace(/\n/g, '\\n');
       var cipherText = '';
       var child = spawn(__dirname + '/gpg.sh', [keyring], { env: {MESSAGE: strippedMessage }});
 
