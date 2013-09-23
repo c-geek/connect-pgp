@@ -8,7 +8,10 @@ function OpenPGPJS(privateKey, passphrase) {
   openpgp.keyring.importPrivateKey(privateKey, passphrase);
 
   this.sign = function (message, callback) {
-    callback(null, openpgp.write_signed_message(openpgp.keyring.privateKeys[0].obj, message));
+    var cleaned = message;
+    cleaned = cleaned.replace(/-----BEGIN PGP([A-Z ]*)-----/g, 'BEGIN PGP$1');
+    cleaned = cleaned.replace(/-----END PGP([A-Z ]*)-----/g, 'END PGP$1');
+    callback(null, cleaned, openpgp.write_signed_message(openpgp.keyring.privateKeys[0].obj, message));
   }
 }
 
@@ -20,7 +23,7 @@ function GPG(privateKey, passphrase, keyring) {
   fs.writeFileSync(privateKeyName, privateKey, { encoding: 'utf8'})
 
   var exec = require('child_process').exec;
-  exec('./gpg-import.sh ' + keyring + ' ' + privateKeyName, function (error, stdout, stderr) {
+  exec(__dirname + '/gpg-import.sh ' + keyring + ' ' + privateKeyName, function (error, stdout, stderr) {
     fs.unlink(privateKeyName, function () {
       if(stderr) console.error(stderr);
       if(stdout) console.log(stdout);
@@ -31,7 +34,7 @@ function GPG(privateKey, passphrase, keyring) {
     try{
       var strippedMessage = message.replace(/\r\n/, '\n').replace(/\n/, '\\n');
       var cipherText = '';
-      var child = spawn('./gpg.sh', [keyring], { env: {MESSAGE: strippedMessage }});
+      var child = spawn(__dirname + '/gpg.sh', [keyring], { env: {MESSAGE: strippedMessage }});
 
       child.stdin.write(passphrase);
       child.stdin.end();
@@ -50,7 +53,7 @@ function GPG(privateKey, passphrase, keyring) {
       });
 
       child.on('close', function () {
-        callback(null, cipherText.toString());
+        callback(null, message, cipherText.toString());
       });
     }
     catch(ex){

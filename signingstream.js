@@ -24,16 +24,13 @@ SigningStream.prototype.sign = function(callback) {
   var that = this;
   process.nextTick(function () {
     var body = that.buffer.replace(/\r\n/g, '\n').replace(/\n/g, '\r\n');
-    var cleaned = body;
-    cleaned = cleaned.replace(/-----BEGIN PGP([A-Z ]*)-----/g, 'BEGIN PGP$1');
-    cleaned = cleaned.replace(/-----END PGP([A-Z ]*)-----/g, 'END PGP$1');
     // var start = Date.now();
-    that.jspgp.sign(cleaned, function (err, ciphertext) {
+    that.jspgp.sign(body, function (err, text, ciphertext) {
       // var end = Date.now();
       // console.log("Duration: %sms", (end-start));
       var body = '';
       body += '--' + that.boundary + '\n';
-      body += cleaned + '\n\n';
+      body += text + '\n\n';
       if(!err){
         ciphertext = ciphertext.substring(ciphertext.lastIndexOf('-----BEGIN PGP SIGNATURE-----'));
         body += '--' + that.boundary + '\n';
