@@ -1,6 +1,6 @@
 {
   "name": "connect-pgp",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Connect middleware to cryptographically sign HTTP responses.",
   "directories": {
     "test": "test"
