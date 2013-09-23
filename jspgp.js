@@ -11,7 +11,7 @@ function OpenPGPJS(privateKey, passphrase) {
     var cleaned = message;
     cleaned = cleaned.replace(/-----BEGIN PGP([A-Z ]*)-----/g, 'BEGIN PGP$1');
     cleaned = cleaned.replace(/-----END PGP([A-Z ]*)-----/g, 'END PGP$1');
-    callback(null, cleaned, openpgp.write_signed_message(openpgp.keyring.privateKeys[0].obj, message));
+    callback(null, cleaned, openpgp.write_signed_message(openpgp.keyring.privateKeys[0].obj, cleaned));
   }
 }
 
