@@ -1,3 +1,5 @@
+
+
 module.exports = function (privateKey, passphrase, keyring) {
   return keyring ? new GPG(privateKey, passphrase, keyring) : new OpenPGPJS(privateKey, passphrase) ;
 }
@@ -32,7 +34,7 @@ function GPG(privateKey, passphrase, keyring) {
 
   this.sign = function (message, callback) {
     try{
-      var strippedMessage = message.replace(/\r\n/g, '\n').replace(/\n/g, '\\n');
+      var strippedMessage = message.replace(/\r\n/g, '\n').replace(/\n/g, '\r\n').replace(/\r\n/g, '\\r\\n').replace(/\t/g, '\\t').replace(/ /g, '\\s');
       var cipherText = '';
       var child = spawn(__dirname + '/gpg.sh', [keyring], { env: {MESSAGE: strippedMessage }});
 
