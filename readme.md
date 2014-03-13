@@ -8,13 +8,17 @@ A middleware for Connect.js signing HTTP responses.
 var connect = require('connect');
 var pgpsign = require('connect-pgp');
 
-var armoredPrivateKey = fs.readFileSync('somePGPKey.private', 'utf8');
+// This is your super signing own function!
+function doSign(msg, callback) {
+  // Do signing stuff...
+  callback(err, pgpSignedMessage);
+}
 
+// New connect app
 var app = connect();
-app.use(pgpsign(armoredPrivateKey, 'password for unlocking'));
 
-// Or, to use gpg system command as underlying PGP signature layer
-app.use(pgpsign(armoredPrivateKey, 'password for unlocking', 'keyringName'));
+// Now signing HTTP requests!
+app.use(pgpsign(doSign));
 ```
 
 ## Triggering
