@@ -5,7 +5,7 @@ function SigningStream(sign, boundary) {
   stream.Stream.call(this);
   this.writable = true;
   this.buffer = "";
-  this.sign = sign;
+  this.doSign = sign;
   this.boundary = boundary;
 };
 util.inherits(SigningStream, stream.Stream);
@@ -26,7 +26,7 @@ SigningStream.prototype.sign = function(callback) {
     var body = that.buffer.replace(/\r\n/g, '\n').replace(/\n/g, '\r\n');
     var text = body;
     // var start = Date.now();
-    that.sign(body, function (err, ciphertext) {
+    that.doSign(body, function (err, ciphertext) {
       // var end = Date.now();
       // console.log("Duration: %sms", (end-start));
       var body = '';
