@@ -26,8 +26,7 @@ module.exports = function sign(signFunction) {
       , end = res.end
       , stream
       , method
-      , doSign = req.headers['accept'] == 'multipart/signed'
-      , boundary = 'foo';
+      , doSign = req.headers['accept'] == 'multipart/msigned';
 
     // see compress.js #724
     req.on('close', function(){
@@ -71,10 +70,8 @@ module.exports = function sign(signFunction) {
       stream = new SigningStream(signFunction, boundary);
 
       // header fields
-      var contentType = 'multipart/signed;';
+      var contentType = 'multipart/msigned;';
       contentType += ' boundary='+boundary+';';
-      //contentType += ' micalg=pgp-sha1;';
-      contentType += ' protocol="application/pgp-signature"';
       res.setHeader('Content-Type', contentType);
       res.removeHeader('Content-Length');
 
