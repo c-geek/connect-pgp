@@ -26,16 +26,16 @@ SigningStream.prototype.sign = function(callback) {
     var text = that.buffer.replace(/\r\n/g, '\n').replace(/\n/g, '\r\n');
     that.doSign(text, function (err, signature) {
       var body = '';
-      body += '--' + that.boundary + '\n';
+      body += '--' + that.boundary + '\r\n';
       body += 'Content-Type: octet-stream\r\n\r\n';
       body += text + '\r\n';
       if(!err){
         signature = signature.substring(signature.lastIndexOf('-----BEGIN PGP SIGNATURE-----'));
-        body += '--' + that.boundary + '\n';
-        body += 'Content-Type: application/pgp-signature\n\n';
-        body += signature + '\n';
+        body += '--' + that.boundary + '\r\n';
+        body += 'Content-Type: application/pgp-signature\r\n\r\n';
+        body += signature + '\r\n';
       }
-      body += '--' + that.boundary + '--\n';
+      body += '--' + that.boundary + '--\r\n';
       callback(body);
     });
   });
